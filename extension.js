@@ -68,16 +68,21 @@ export default {
                     const apiKey = extensionAPI.settings.get("nasa-apiKey");
                     const response = await fetch("https://api.nasa.gov/planetary/apod?api_key=" + apiKey + "");
                     const data = await response.json();
-                    console.info(data);
                     if (response.ok) {
+                        console.info(data);
                         let title = data.title.toString();
                         let hdurl = data.hdurl.toString();
                         let url = data.url.toString();
                         let explanation = data.explanation.toString();
-                        let copyright = data.copyright.toString();
+                        
+                        let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
+                        if (data.hasOwnProperty("copyright")) {
+                            let copyright = data.copyright.toString();
+                            titleString += " ©[[" + copyright + "]]";
+                        }
                         return [
                             {
-                                text: "**Astronomy Picture of the Day ~ [[" + title + "]]** ©[[" + copyright + "]]", 
+                                text: titleString, 
                                 children: [
                                     { text: "![](" + url + ")" },
                                     { text: "" + explanation + "" },
