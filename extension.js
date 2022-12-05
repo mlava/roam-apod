@@ -69,11 +69,13 @@ export default {
                     const response = await fetch("https://api.nasa.gov/planetary/apod?api_key=" + apiKey + "");
                     const data = await response.json();
                     if (response.ok) {
-                        console.info(data);
                         let title = data.title.toString();
                         let hdurl = data.hdurl.toString();
                         let url = data.url.toString();
                         let explanation = data.explanation.toString();
+                        const regex = /(Your Sky Surprise.+1995\))/gm;
+                        const subst = ``;
+                        explanation = explanation.replace(regex, subst).trim();
                         
                         let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
                         if (data.hasOwnProperty("copyright")) {
