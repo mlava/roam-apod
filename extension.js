@@ -76,6 +76,9 @@ export default {
                         const regex = /(Your Sky Surprise.+1995\))/gm;
                         const subst = ``;
                         explanation = explanation.replace(regex, subst).trim();
+                        const regex1 = /(Astrophysicists: Browse.+Source Code Library)/gm;
+                        const subst1 = ``;
+                        explanation = explanation.replace(regex1, subst1).trim();
                         
                         let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
                         if (data.hasOwnProperty("copyright")) {
