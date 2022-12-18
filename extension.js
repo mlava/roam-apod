@@ -79,6 +79,12 @@ export default {
                         const regex1 = /(Astrophysicists: Browse.+Source Code Library)/gm;
                         const subst1 = ``;
                         explanation = explanation.replace(regex1, subst1).trim();
+                        const regex2 = /(Almost Hyperspace: Random APOD Generator)/gm;
+                        const subst2 = ``;
+                        explanation = explanation.replace(regex2, subst2).trim();
+                        const regex3 = /(\s{2,3})/gm;
+                        const subst3 = ` `;
+                        explanation = explanation.replace(regex3, subst3).trim();
                         
                         let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
                         if (data.hasOwnProperty("copyright")) {
