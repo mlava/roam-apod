@@ -74,6 +74,8 @@ export default {
                         let url = data.url.toString();
                         url = url.replaceAll("(", "%28");
                         url = url.replaceAll(")", "%29");
+                        hdurl = hdurl.replaceAll("(", "%28");
+                        hdurl = hdurl.replaceAll(")", "%29");
                         let explanation = data.explanation.toString();
                         const regex = /(Your Sky Surprise.+1995\))/gm;
                         const subst = ``;
