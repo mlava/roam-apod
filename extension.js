@@ -14,7 +14,7 @@ export default {
     onload: ({ extensionAPI }) => {
         extensionAPI.settings.panel.create(config);
 
-        window.roamAlphaAPI.ui.commandPalette.addCommand({
+        extensionAPI.ui.commandPalette.addCommand({
             label: "Astronomy Picture of the Day (NASA)",
             callback: () => {
                 const uid = window.roamAlphaAPI.ui.getFocusedBlock()?.["block-uid"];
@@ -72,10 +72,14 @@ export default {
                         let title = data.title.toString();
                         let hdurl = data.hdurl.toString();
                         let url = data.url.toString();
-                        url = url.replaceAll("(", "%28");
-                        url = url.replaceAll(")", "%29");
-                        hdurl = hdurl.replaceAll("(", "%28");
-                        hdurl = hdurl.replaceAll(")", "%29");
+                        if (url.includes("(")) {
+                            url = url.replaceAll("(", "%28");
+                            url = url.replaceAll(")", "%29");
+                        }
+                        if (hdurl.includes("(")) {
+                            hdurl = hdurl.replaceAll("(", "%28");
+                            hdurl = hdurl.replaceAll(")", "%29");
+                        }
                         let explanation = data.explanation.toString();
                         const regex = /(Your Sky Surprise.+1995\))/gm;
                         const subst = ``;
@@ -113,9 +117,6 @@ export default {
         };
     },
     onunload: () => {
-        window.roamAlphaAPI.ui.commandPalette.removeCommand({
-            label: 'Astronomy Picture of the Day (NASA)'
-        });
         if (window.roamjs?.extension?.smartblocks) {
             window.roamjs.extension.smartblocks.unregisterCommand("APOD");
         }
