@@ -93,15 +93,16 @@ export default {
                         const regex3 = /(\s{2,3})/gm;
                         const subst3 = ` `;
                         explanation = explanation.replace(regex3, subst3).trim();
-                        
+
                         let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
                         if (data.hasOwnProperty("copyright")) {
                             let copyright = data.copyright.toString();
-                            titleString += " ©[[" + copyright + "]]";
+                            copyright = copyright.replaceAll("\n", "");
+                            titleString += " © [[" + copyright + "]]";
                         }
                         return [
                             {
-                                text: titleString, 
+                                text: titleString,
                                 children: [
                                     { text: "![](" + url + ")" },
                                     { text: "" + explanation + "" },
