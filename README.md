@@ -1,6 +1,7 @@
 The images available from NASA's Astronomy Picture of the Day (APOD) service can be absolutely extraordinary.
 
 **New:**
+- fix for when APOD shows a video rather than an image
 - Now compatible with the new user-defined hotkeys function - see Hotkeys option in Roam Research Settings
 
 ![image](https://user-images.githubusercontent.com/6857790/202060671-70476dd6-9b5e-4c49-ab97-7e18e85f13f8.png)

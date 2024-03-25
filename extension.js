@@ -68,17 +68,21 @@ export default {
                     const apiKey = extensionAPI.settings.get("nasa-apiKey");
                     const response = await fetch("https://api.nasa.gov/planetary/apod?api_key=" + apiKey + "");
                     const data = await response.json();
+
                     if (response.ok) {
+                        var hdurl, urlString;
+                        if (data.media_type == "image") {
+                            hdurl = data.hdurl.toString();
+                            if (hdurl.includes("(")) {
+                                hdurl = hdurl.replaceAll("(", "%28");
+                                hdurl = hdurl.replaceAll(")", "%29");
+                            }
+                        }
                         let title = data.title.toString();
-                        let hdurl = data.hdurl.toString();
                         let url = data.url.toString();
                         if (url.includes("(")) {
                             url = url.replaceAll("(", "%28");
                             url = url.replaceAll(")", "%29");
-                        }
-                        if (hdurl.includes("(")) {
-                            hdurl = hdurl.replaceAll("(", "%28");
-                            hdurl = hdurl.replaceAll(")", "%29");
                         }
                         let explanation = data.explanation.toString();
                         const regex = /(Your Sky Surprise.+1995\))/gm;
@@ -100,16 +104,34 @@ export default {
                             copyright = copyright.replaceAll("\n", "");
                             titleString += " © [[" + copyright + "]]";
                         }
-                        return [
-                            {
-                                text: titleString,
-                                children: [
-                                    { text: "![](" + url + ")" },
-                                    { text: "" + explanation + "" },
-                                    { text: "[HD Image](" + hdurl + ")" },
-                                ]
-                            },
-                        ];
+                        if (data.media_type == "video") {
+                            url = url.split("/")[4];
+                            if (url.includes("?rel=0")) {
+                                url = url.replace("?rel=0", "");
+                            }
+                            urlString = "{{[[video]]: https://www.youtube.com/watch?v=" + url + "}} ";
+                            return [
+                                {
+                                    text: titleString,
+                                    children: [
+                                        { text: urlString },
+                                        { text: "" + explanation + "" },
+                                    ]
+                                },
+                            ];
+                        } else {
+                            urlString = "![](" + url + ") ";
+                            return [
+                                {
+                                    text: titleString,
+                                    children: [
+                                        { text: urlString },
+                                        { text: "" + explanation + "" },
+                                        { text: "[HD Image](" + hdurl + ")" },
+                                    ]
+                                },
+                            ];
+                        }
                     } else {
                         console.error(data);
                     }
