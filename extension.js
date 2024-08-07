@@ -101,6 +101,9 @@ export default {
                         let titleString = "**Astronomy Picture of the Day ~ [[" + title + "]]**";
                         if (data.hasOwnProperty("copyright")) {
                             let copyright = data.copyright.toString();
+                            const regex = /(\(Used with permission\))/gm;
+                            const subst = ``;
+                            copyright = copyright.replace(regex, subst).trim();
                             copyright = copyright.replaceAll("\n", "");
                             titleString += " © [[" + copyright + "]]";
                         }
