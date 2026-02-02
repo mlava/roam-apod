@@ -37,6 +37,7 @@ The extension inserts:
 ## Notes
 - If the API key is missing, SmartBlocks will insert a short reminder instead of failing.
 - If Roam is still loading, try again once the graph finishes initializing.
+- Prefer HD image embed (when available) can be enabled in the extension settings.
 
 ## Changelog
 - Video APOD support
