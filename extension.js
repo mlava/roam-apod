@@ -9,7 +9,6 @@ function buildSettingsConfig(extensionAPI) {
                 action: {
                     type: "input",
                     placeholder: "Add API key here",
-                    value: extensionAPI.settings.get("nasa-apiKey") || "",
                 },
             },
             {
@@ -18,7 +17,6 @@ function buildSettingsConfig(extensionAPI) {
                 description: "When available, embed the HD image instead of the standard image.",
                 action: {
                     type: "switch",
-                    value: !!extensionAPI.settings.get("nasa-prefer-hd-embed"),
                 },
             },
         ],
@@ -59,8 +57,8 @@ export default {
                     if (blocks) {
                         await window.roamAlphaAPI.updateBlock(
                             { block: { uid: uid, string: blocks[0].text.toString(), open: true } });
-                        for (var i = 0; i < blocks[0].children.length; i++) {
-                            var thisBlock = window.roamAlphaAPI.util.generateUID();
+                        for (let i = 0; i < blocks[0].children.length; i++) {
+                            let thisBlock = window.roamAlphaAPI.util.generateUID();
                             await window.roamAlphaAPI.createBlock({
                                 location: { "parent-uid": uid, order: i + 1 },
                                 block: { string: blocks[0].children[i].text.toString(), uid: thisBlock }
@@ -143,12 +141,17 @@ export default {
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
-                const response = await fetch(
-                    "https://api.nasa.gov/planetary/apod?api_key=" + apiKey + "",
-                    { signal: controller.signal }
-                );
-                clearTimeout(timeoutId);
-                const text = await response.text();
+                let response = null;
+                let text = "";
+                try {
+                    response = await fetch(
+                        "https://api.nasa.gov/planetary/apod?api_key=" + apiKey + "",
+                        { signal: controller.signal }
+                    );
+                    text = await response.text();
+                } finally {
+                    clearTimeout(timeoutId);
+                }
                 let data = null;
                 try {
                     data = JSON.parse(text);
@@ -161,7 +164,8 @@ export default {
                     throw new Error(message);
                 }
 
-                var hdurl, urlString;
+                let hdurl = "";
+                let urlString = "";
                 if (data.media_type == "image") {
                     hdurl = safeUrl(data.hdurl);
                 }
